@@ -87,3 +87,12 @@ coins = [2, 3, 7]
 change n = change' [] [x:y | x <- coins, y <-[[]]] where
     change' res [] = res
     change' res act = change' (res ++ filter (\l -> sum l == n) act) (filter (\l -> sum l <= n) [x:y | x <- coins, y <-act])
+
+concatList :: [[a]] -> [a]
+concatList = foldr (++) []
+
+lengthList :: [a] -> Int
+lengthList = foldr (\_ s -> s + 1) 0
+
+sumOdd :: [Integer] -> Integer
+sumOdd = foldr (\x s -> if odd x then s + x else s) 0
