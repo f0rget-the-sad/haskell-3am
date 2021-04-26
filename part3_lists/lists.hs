@@ -1,3 +1,5 @@
+import Data.Char
+
 addTwoElements :: a -> a -> [a] -> [a]
 addTwoElements a1 a2 lst = a1 : a2 : lst
 
@@ -41,3 +43,47 @@ groupElems (h: hs) = helper [h] hs where
     helper h (x:xs)
         | head h == x = helper (x : h) xs
         | otherwise = h : helper [x] xs
+
+readDigits :: String -> (String, String)
+readDigits = span isDigit
+
+filterDisj :: (a -> Bool) -> (a -> Bool) -> [a] -> [a]
+filterDisj f1 f2 = filter (\x -> f1 x || f2 x)
+
+qsort :: Ord a => [a] -> [a]
+qsort (x:xs) = qsort (filter (<=x) xs) ++ [x] ++ qsort (filter (>x) xs)
+qsort xs = xs
+
+squares'n'cubes :: Num a => [a] -> [a]
+squares'n'cubes = concatMap (\x -> [x^2, x^3])
+
+{-
+My brain is not ready for this yet, taking mostly understandable version from:
+http://stackoverflow.com/a/24564307/2289640
+-}
+perms :: [a] -> [[a]]
+perms xxs     = xxs : perms' xxs
+perms' []     = []
+perms' (x:xs) = interleave' xs ++ concatMap interleave (perms' xs)
+  where
+   interleave yss = (x:yss) : interleave' yss
+   interleave' [] = []
+   interleave' (y:ys) = map (y:) (interleave ys)
+
+delAllUpper :: String -> String
+delAllUpper = unwords . filter (any isLower ) . words
+
+max3 :: Ord a => [a] -> [a] -> [a] -> [a]
+max3 = zipWith3 (\x1 x2 x3 -> max (max x1 x2) x3)
+
+fibStream :: [Integer]
+fibStream = fibStream' [0] [1] where
+    fibStream' a1 a2 = head a1 : fibStream' (zipWith (+) a1 a2) a1
+
+repeat = iterate repeatHelper
+repeatHelper = id
+
+coins = [2, 3, 7]
+change n = change' [] [x:y | x <- coins, y <-[[]]] where
+    change' res [] = res
+    change' res act = change' (res ++ filter (\l -> sum l == n) act) (filter (\l -> sum l <= n) [x:y | x <- coins, y <-act])
