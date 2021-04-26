@@ -1,4 +1,5 @@
 import Data.Char
+import GHC.Float
 
 addTwoElements :: a -> a -> [a] -> [a]
 addTwoElements a1 a2 lst = a1 : a2 : lst
@@ -96,3 +97,32 @@ lengthList = foldr (\_ s -> s + 1) 0
 
 sumOdd :: [Integer] -> Integer
 sumOdd = foldr (\x s -> if odd x then s + x else s) 0
+
+{-
+foldr (-) x [2,1,5]
+foldl (-) x [2,1,5]
+x = ?
+2 - (1 - (5 - x)) = x - 2 - 1 - 5
+2 - 1  + 5 - x = x -8
+6 -x = x -8
+2x = 14
+x = 7
+-}
+
+meanList :: [Double] -> Double
+meanList p = (foldr (+) 0 p) / (int2Double (length p))
+
+evenOnly :: [a] -> [a]
+evenOnly p = foldr (\(idx, x) lst -> if even idx then x:lst else lst) [] (zip [1..] p)
+
+lastElem :: [a] -> a
+lastElem = foldl1 (\x y -> y)
+
+unfoldr :: (b -> Maybe (a, b)) -> b -> [a]
+unfoldr f init = helper (f init) where
+    helper (Just (x, ini')) = x : unfoldr f ini'
+    helper Nothing          = []
+
+revRange :: (Char,Char) -> [Char]
+revRange (beginC, endC) = unfoldr g endC
+  where g x = if x < beginC then Nothing else Just(x, (pred x))
