@@ -7,3 +7,4 @@ Learning Haskell at 3 a.m.
 
 ## Links
 - [Course](https://stepik.org/course/75/syllabus?auth=registration)
+- [My certificate](https://stepik.org/cert/961155)
